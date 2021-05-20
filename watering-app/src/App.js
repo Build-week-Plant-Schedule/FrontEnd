@@ -25,15 +25,29 @@ function App() {
       password: ''
   }
 
+  const initAddPlantForm = {
+    // ID SHOULD BE GENERATED ON SUBMIT
+    id: 0,
+    nickname: '',
+    species: '',
+    // I THINK THIS SHOULD BE AN ARRAY?
+    // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
+    h2oFrequency: []
+  }
+
   // GETS SET WHEN USER LOGS IN
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
-  // PASS THIS TO HOMEPAGE
+  // PASSED TO HOMEPAGE
   const [auth, setAuth] = useState('');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
+
+  const [plantForm, setPlantForm] = useState(initAddPlantForm);
+
+  const [plantList, setPlantList] = useState([])
 
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
@@ -42,6 +56,14 @@ function App() {
   }
 
   // NEED SUBMIT HANDLER FOR SIGNUP FORM
+
+  // NEED CHANGE HANDLER FOR LOGIN FORM
+
+  // NEED SUBMIT HANDLER FOR LOGIN FORM
+
+  // NEED CHANGE HANDLER FOR ADDPLANT FORM
+
+  // NEED SUBMIT HANDLER FOR ADDPLANT FORM
 
   return (
     <div>
