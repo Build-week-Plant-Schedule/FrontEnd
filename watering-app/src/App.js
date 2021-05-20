@@ -24,7 +24,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path='/'>
-            <Home />
+            <Home auth={auth} />
           </Route>
           <Route exact path='/Login'>
                 <Login />
