@@ -12,6 +12,7 @@ export default function Home(props) {
 
     const returningUser = <>
         <Link to='UserScreen'>User Screen</Link>
+        <Link to='AddPlants'>Add Plants</Link>
     </>
 
     const linkHandler = auth ? returningUser : newUsers;

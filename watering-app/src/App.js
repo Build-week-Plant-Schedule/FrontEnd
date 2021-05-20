@@ -10,6 +10,7 @@ import Home from './components/Homepage';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import UserScreen from './components/UserScreen';
+import AddPlants from './components/AddPlants';
 
 function App() {
 
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />
+          </Route>
+          <Route exact path='/AddPlants'>
+                <AddPlants />
           </Route>
         </Switch>
       </Router>
