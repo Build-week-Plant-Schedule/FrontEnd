@@ -14,11 +14,34 @@ import AddPlants from './components/AddPlants';
 
 function App() {
 
+  const initSignupForm = {
+    username: '',
+    phoneNumber: '',
+    password: ''
+  }
+
+  const initLoginForm = {
+    // NOT SURE WHETHER TO HAVE USERS LOGIN WITH USERNAME OF PHONE NUMBER
+      password: ''
+  }
+
   // GETS SET WHEN USER LOGS IN
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASS THIS TO HOMEPAGE
   const [auth, setAuth] = useState('');
+
+  const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
+
+  const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
+
+  const signupFormChangeHandler = e => {
+    const {name, value} = e.target;
+    setSignupFormValue({...signupFormValue, [name]: value})
+    console.log(signupFormValue)
+  }
+
+  // NEED SUBMIT HANDLER FOR SIGNUP FORM
 
   return (
     <div>
@@ -31,7 +54,7 @@ function App() {
                 <Login />
           </Route>
           <Route exact path='/Signup'>
-                <Signup />
+                <Signup formValue={signupFormValue} change={signupFormChangeHandler} />
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />
