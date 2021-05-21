@@ -48,8 +48,6 @@ function App() {
 
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
 
-
-
   const [plantList, setPlantList] = useState([])
 
   const signupFormChangeHandler = e => {
@@ -65,6 +63,17 @@ function App() {
   // NEED SUBMIT HANDLER FOR LOGIN FORM
 
   // NEED CHANGE HANDLER FOR ADDPLANT FORM
+
+  // INCREASE/DECREMENT WATERPERDAY IN PLANTFORM STATE
+  // ATTACHES TO BUTTON NAME ADD AND REMOVE
+  const waterNumberChanger = e => {
+    e.preventDefault();
+    if (e.target.name === 'add') {
+      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1})
+    } else if (plantForm.waterPerDay !== 1) {
+      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay - 1})
+    }
+  }
 
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
 
@@ -85,7 +94,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} />
+                <AddPlants formValue={plantForm} waterHandler={waterNumberChanger} />
           </Route>
         </Switch>
       </Router>

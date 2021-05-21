@@ -1,7 +1,7 @@
 
 export default function AddPlants(props) {
 
-    const {formValue} = props;
+    const {formValue, waterHandler} = props;
 
     const timeForm = index => {
         return (
@@ -46,6 +46,8 @@ export default function AddPlants(props) {
                     <label>
                         Add Time to Water
                         {h2oFormHandler(formValue.waterPerDay)}
+                        <button name='remove' onClick={waterHandler} >Remove time</button>
+                        <button name='add' onClick={waterHandler} >Add time</button>
                     </label>
                 </div>
             </form>
