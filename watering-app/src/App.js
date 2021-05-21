@@ -30,6 +30,8 @@ function App() {
     id: 0,
     nickname: '',
     species: '',
+    // KEEPS TRACK OF NUMBER OF TIME INPUTS
+    // CRUCIAL TO RENDERING MULTIPLE TIME FORMS
     waterPerDay: 1,
     // I THINK THIS SHOULD BE AN ARRAY?
     // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
