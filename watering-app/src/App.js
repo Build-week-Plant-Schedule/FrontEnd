@@ -30,6 +30,7 @@ function App() {
     id: 0,
     nickname: '',
     species: '',
+    waterPerDay: 1,
     // I THINK THIS SHOULD BE AN ARRAY?
     // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
     h2oFrequency: []
@@ -39,13 +40,15 @@ function App() {
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('');
+  const [auth, setAuth] = useState('1');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
 
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
+
+
 
   const [plantList, setPlantList] = useState([])
 
@@ -82,7 +85,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants />
+                <AddPlants formValue={plantForm} />
           </Route>
         </Switch>
       </Router>
