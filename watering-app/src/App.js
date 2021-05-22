@@ -30,6 +30,9 @@ function App() {
     id: 0,
     nickname: '',
     species: '',
+    // KEEPS TRACK OF NUMBER OF TIME INPUTS
+    // CRUCIAL TO RENDERING MULTIPLE TIME FORMS
+    waterPerDay: 1,
     // I THINK THIS SHOULD BE AN ARRAY?
     // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
     h2oFrequency: []
@@ -39,7 +42,7 @@ function App() {
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('');
+  const [auth, setAuth] = useState('1');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
@@ -67,6 +70,17 @@ function App() {
 
   // NEED CHANGE HANDLER FOR ADDPLANT FORM
 
+  // INCREASE/DECREMENT WATERPERDAY IN PLANTFORM STATE
+  // ATTACHES TO BUTTON NAME ADD AND REMOVE
+  const waterNumberChanger = e => {
+    e.preventDefault();
+    if (e.target.name === 'add') {
+      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1})
+    } else if (plantForm.waterPerDay !== 1) {
+      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay - 1})
+    }
+  }
+
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
 
   return (
@@ -86,7 +100,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants />
+                <AddPlants formValue={plantForm} waterHandler={waterNumberChanger} />
           </Route>
         </Switch>
       </Router>
