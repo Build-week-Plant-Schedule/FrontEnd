@@ -21,7 +21,7 @@ function App() {
   }
 
   const initLoginForm = {
-    // NOT SURE WHETHER TO HAVE USERS LOGIN WITH USERNAME OF PHONE NUMBER
+      username: '',
       password: ''
   }
 
@@ -57,7 +57,11 @@ function App() {
 
   // NEED SUBMIT HANDLER FOR SIGNUP FORM
 
-  // NEED CHANGE HANDLER FOR LOGIN FORM
+  const loginFormChangeHandler = e => {
+    const {name, value} = e.target; 
+    setLoginFormValue({...loginFormValue, [name]: value})
+    console.log(loginFormValue);
+  }
 
   // NEED SUBMIT HANDLER FOR LOGIN FORM
 
@@ -73,7 +77,7 @@ function App() {
             <Home auth={auth} />
           </Route>
           <Route exact path='/Login'>
-                <Login />
+                <Login formValue={loginFormValue} change={loginFormChangeHandler} />
           </Route>
           <Route exact path='/Signup'>
                 <Signup formValue={signupFormValue} change={signupFormChangeHandler} />
