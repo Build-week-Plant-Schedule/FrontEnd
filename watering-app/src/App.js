@@ -38,17 +38,25 @@ function App() {
     h2oFrequency: []
   }
 
+  const initTimeFormValue = {
+    hour: 0,
+    minute: 0,
+    half: ''
+  }
+
   // GETS SET WHEN USER LOGS IN
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('');
+  const [auth, setAuth] = useState('1');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
 
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
+
+  const [timeFormValue, setTimeFormValue] = useState([initTimeFormValue])
 
   const [plantList, setPlantList] = useState([])
 
@@ -79,16 +87,38 @@ function App() {
   }
 
   // NEED CHANGE HANDLER FOR ADDPLANT FORM
+  const addPlantChangeHandler = e => {
+    const {name, value} = e.target;
+    setPlantForm({...plantForm, [name]: value});
+    console.log(plantForm);
+  }
 
   // INCREASE/DECREMENT WATERPERDAY IN PLANTFORM STATE
   // ATTACHES TO BUTTON NAME ADD AND REMOVE
   const waterNumberChanger = e => {
     e.preventDefault();
     if (e.target.name === 'add') {
-      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1})
+      setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1});
+      setTimeFormValue([...timeFormValue, initTimeFormValue]);
+      console.log(timeFormValue);
     } else if (plantForm.waterPerDay !== 1) {
       setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay - 1})
+      let newTimeState = timeFormValue
+      newTimeState.pop();
+      setTimeFormValue(newTimeState);
     }
+  }
+
+  const timeFormValueChangeHandler = e => {
+    const {name, value, id} = e.target;
+
+    let arr = timeFormValue;
+    let arrIndex = arr[id]
+    let newArrIndex = {...arrIndex, [name]: value};
+    arr[id] = newArrIndex;
+    setTimeFormValue(arr);
+    console.log(timeFormValue)
+
   }
 
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
@@ -110,7 +140,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} waterHandler={waterNumberChanger} />
+                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} />
           </Route>
         </Switch>
       </Router>
