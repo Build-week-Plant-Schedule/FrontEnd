@@ -42,7 +42,7 @@ function App() {
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('1');
+  const [auth, setAuth] = useState('');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
@@ -59,6 +59,11 @@ function App() {
   }
 
   // NEED SUBMIT HANDLER FOR SIGNUP FORM
+  const signupFormSubmit = e => {
+    e.preventDefault();
+    // axios.post('', signupFormValue)
+    setSignupFormValue(initSignupForm);
+  }
 
   const loginFormChangeHandler = e => {
     const {name, value} = e.target; 
@@ -67,6 +72,11 @@ function App() {
   }
 
   // NEED SUBMIT HANDLER FOR LOGIN FORM
+  const loginFormSubmit = e => {
+    e.preventDefault();
+    // axios.post('', loginFormValue)
+    setLoginFormValue(initLoginForm);
+  }
 
   // NEED CHANGE HANDLER FOR ADDPLANT FORM
 
@@ -91,10 +101,10 @@ function App() {
             <Home auth={auth} />
           </Route>
           <Route exact path='/Login'>
-                <Login formValue={loginFormValue} change={loginFormChangeHandler} />
+                <Login formValue={loginFormValue} change={loginFormChangeHandler} submit={loginFormSubmit} />
           </Route>
           <Route exact path='/Signup'>
-                <Signup formValue={signupFormValue} change={signupFormChangeHandler} />
+                <Signup formValue={signupFormValue} change={signupFormChangeHandler} submit={signupFormSubmit} />
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />

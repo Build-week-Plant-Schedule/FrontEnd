@@ -1,12 +1,12 @@
 
 export default function Login(props) {
 
-    const {formValue, change} = props;
+    const {formValue, change, submit} = props;
 
     return (
         // FORM NEEDS ON SUBMIT
         <div>
-            <form>
+            <form onSubmit={submit} >
                 <label>
                     Username
                     <input type='text' name='username' value={formValue.username} onChange={change} />
