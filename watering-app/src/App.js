@@ -33,22 +33,20 @@ function App() {
     // KEEPS TRACK OF NUMBER OF TIME INPUTS
     // CRUCIAL TO RENDERING MULTIPLE TIME FORMS
     waterPerDay: 1,
-    // I THINK THIS SHOULD BE AN ARRAY?
-    // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
     h2oFrequency: []
   }
 
   const initTimeFormValue = {
     hour: 0,
     minute: 0,
-    half: ''
+    checked: false
   }
 
   // GETS SET WHEN USER LOGS IN
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('1');
+  const [auth, setAuth] = useState('');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
@@ -109,14 +107,34 @@ function App() {
     }
   }
 
+  const halfCheckboxHandler = (name, value, array) => {
+    // CHECKBOX NEEDS CHECKED
+    // THIS DOUBLE SYNCHS THE CHECK VALUE ON INDEX 1 & 2 AGAIN
+    // AND CHECKVALUES DO NOT UPDATE UNTIL NEW FORM IS ADDED OR REMOVED
+    if (name === 'half') {
+      array.checked = !array.checked;
+      return array;
+    } else {
+      return {...array, [name]: value}
+    }
+    
+  }
+
+  
+
   const timeFormValueChangeHandler = e => {
     const {name, value, id} = e.target;
 
     let arr = timeFormValue;
     let arrIndex = arr[id]
-    let newArrIndex = {...arrIndex, [name]: value};
+    let newArrIndex = halfCheckboxHandler(name, value, arrIndex);
+    // let newArrIndex = {...arrIndex, [name]: value};
+    console.log(newArrIndex);
     arr[id] = newArrIndex;
     setTimeFormValue(arr);
+
+    // halfCheckboxHandler(e.target);
+
     console.log(timeFormValue)
 
   }
@@ -140,7 +158,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} />
+                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} checkValue={timeFormValue} />
           </Route>
         </Switch>
       </Router>

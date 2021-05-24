@@ -1,7 +1,7 @@
 
 export default function AddPlants(props) {
 
-    const {formValue, waterHandler, change, timeChange} = props;
+    const {formValue, waterHandler, change, timeChange, checkValue} = props;
 
     // LAYOUT FOR SINGULAR TIME FORM
     const timeForm = index => {
@@ -17,7 +17,8 @@ export default function AddPlants(props) {
                 </label>
                 <label>
                     Click if time is PM
-                    <input type='checkbox' name='half' value='pm' id={index} onChange={timeChange} />
+                    {console.log(checkValue[index].checked)}
+                    <input type='checkbox' name='half' value='pm' id={index} onChange={timeChange} checked={checkValue[index].checked} />
                 </label>
             </div>
         )
