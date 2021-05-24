@@ -1,45 +1,46 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
-import * as yup from 'yup';
-import axios from 'axios';
-import {useState} from 'react';
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import * as yup from "yup";
+import axios from "axios";
+import { useState } from "react";
 
-import Home from './components/Homepage';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import UserScreen from './components/UserScreen';
-import AddPlants from './components/AddPlants';
+import Home from "./components/Homepage";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import UserScreen from "./components/UserScreen";
+import AddPlants from "./components/AddPlants";
+import PrivateRoute from "./helpers/PrivateRoute";
 
 function App() {
-
   const initSignupForm = {
-    username: '',
-    phoneNumber: '',
-    password: ''
-  }
+    username: "",
+    phoneNumber: "",
+    password: "",
+  };
 
   const initLoginForm = {
     // NOT SURE WHETHER TO HAVE USERS LOGIN WITH USERNAME OF PHONE NUMBER
-      password: ''
-  }
+    username: "",
+    password: "",
+  };
 
   const initAddPlantForm = {
     // ID SHOULD BE GENERATED ON SUBMIT
     id: 0,
-    nickname: '',
-    species: '',
+    nickname: "",
+    species: "",
     // I THINK THIS SHOULD BE AN ARRAY?
     // THAT WAY MULTIPLE TIMES/DATES CAN BE ADDED UNDER ONE HEADER
-    h2oFrequency: []
-  }
+    h2oFrequency: [],
+  };
 
   // GETS SET WHEN USER LOGS IN
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('');
+  const [auth, setAuth] = useState("");
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
@@ -47,13 +48,13 @@ function App() {
 
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
 
-  const [plantList, setPlantList] = useState([])
+  const [plantList, setPlantList] = useState([]);
 
-  const signupFormChangeHandler = e => {
-    const {name, value} = e.target;
-    setSignupFormValue({...signupFormValue, [name]: value})
-    console.log(signupFormValue)
-  }
+  const signupFormChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setSignupFormValue({ ...signupFormValue, [name]: value });
+    console.log(signupFormValue);
+  };
 
   // NEED SUBMIT HANDLER FOR SIGNUP FORM
 
@@ -69,21 +70,20 @@ function App() {
     <div>
       <Router>
         <Switch>
-          <Route exact path='/'>
-            <Home auth={auth} />
+          <header>
+            <a></a>
+          </header>
+          <Route exact path="/HomePage" component={Home} />
+
+          <Route exact path="/Login" component={Login}></Route>
+          <Route exact path="/Signup">
+            <Signup
+              formValue={signupFormValue}
+              change={signupFormChangeHandler}
+            />
           </Route>
-          <Route exact path='/Login'>
-                <Login />
-          </Route>
-          <Route exact path='/Signup'>
-                <Signup formValue={signupFormValue} change={signupFormChangeHandler} />
-          </Route>
-          <Route exact path='/UserScreen'>
-                <UserScreen />
-          </Route>
-          <Route exact path='/AddPlants'>
-                <AddPlants />
-          </Route>
+
+          <PrivateRoute path="/UserScreen" component={UserScreen} />
         </Switch>
       </Router>
     </div>
