@@ -1,3 +1,4 @@
+import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function AddPlants(props) {
 
@@ -33,6 +34,7 @@ export default function AddPlants(props) {
 
     return (
         <div>
+            <Link to='/'>Home</Link>
             <h1>AddPlants loaded</h1>
             <form>
                 <label>
