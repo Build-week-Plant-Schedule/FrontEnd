@@ -46,7 +46,7 @@ function App() {
   // CAN WORK WITH LIKE BOOLEAN
   // NOT SURE WHAT THE AUTH WILL LOOK LIKE
   // PASSED TO HOMEPAGE
-  const [auth, setAuth] = useState('');
+  const [auth, setAuth] = useState('1');
 
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
 
