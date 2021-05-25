@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function Signup(props) {
 
-    const {formValue, change} = props;
+    const {formValue, change, submit} = props;
 
     const [agree, setAgree] = useState(false)
 
@@ -20,7 +20,7 @@ export default function Signup(props) {
         <div>
             <Link to='/'>Home</Link>
             {/* FORM NEEDS ONSUBMIT */}
-            <form>
+            <form onSubmit={submit} >
                 <label>
                     Username
                     <input

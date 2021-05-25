@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function AddPlants(props) {
 
-    const {formValue, waterHandler} = props;
+    const {formValue, waterHandler, change, timeChange, checkValue} = props;
 
     // LAYOUT FOR SINGULAR TIME FORM
     const timeForm = index => {
@@ -10,11 +10,16 @@ export default function AddPlants(props) {
             <div key={`time ${index}`} >
                 <label>
                     Hour:
-                    <input type='number' name='hour' min='1' max='12' />
+                    <input type='number' name='hour' min='1' max='12' id={index} onChange={timeChange} />
                 </label>
                 <label>
                     Minutes:
-                    <input type='number' name='minute' min='0' max='59' />
+                    <input type='number' name='minute' min='0' max='59' id={index} onChange={timeChange} />
+                </label>
+                <label>
+                    Click if time is PM
+                    {console.log(checkValue[index].checked)}
+                    <input type='checkbox' name='half' value='pm' id={index} onChange={timeChange} checked={checkValue[index].checked} />
                 </label>
             </div>
         )
@@ -39,11 +44,11 @@ export default function AddPlants(props) {
             <form>
                 <label>
                     Nickname
-                    <input type='text' name='nickname'  />
+                    <input type='text' name='nickname' value={formValue.nickname} onChange={change} />
                 </label>
                 <label>
                     Species Name
-                    <input type='text' name='species'  />
+                    <input type='text' name='species' value={formValue.species} onChange={change} />
                 </label>
                 <div>
                     <label>
