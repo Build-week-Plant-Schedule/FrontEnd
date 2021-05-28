@@ -70,6 +70,12 @@ function App() {
     password: yup.string().required()
   })
 
+  const addPlantSchema = yup.object().shape({
+    hour: yup.number().min().max().required(),
+    minute: yup.number().min().max().required(),
+    half: yup.boolean().required()
+  })
+
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
     setSignupFormValue({...signupFormValue, [name]: value})
