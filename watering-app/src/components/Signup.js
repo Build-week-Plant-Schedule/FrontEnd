@@ -19,7 +19,6 @@ export default function Signup(props) {
     return (
         <div>
             <Link to='/'>Home</Link>
-            {/* FORM NEEDS ONSUBMIT */}
             <form onSubmit={submit} >
                 <label>
                     Username

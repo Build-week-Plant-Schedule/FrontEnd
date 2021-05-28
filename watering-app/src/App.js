@@ -26,12 +26,11 @@ function App() {
   }
 
   const initAddPlantForm = {
-    // ID SHOULD BE GENERATED ON SUBMIT
+    // ID GENERATED BASED OFF PLANTLIST
+    // WHEN NEW FORM IS LOADED
     id: 0,
     nickname: '',
     species: '',
-    // KEEPS TRACK OF NUMBER OF TIME INPUTS
-    // CRUCIAL TO RENDERING MULTIPLE TIME FORMS
     waterPerDay: 1,
     h2oFrequency: []
   }
@@ -41,11 +40,6 @@ function App() {
     minute: 0,
     checked: false
   }
-
-  // GETS SET WHEN USER LOGS IN
-  // CAN WORK WITH LIKE BOOLEAN
-  // NOT SURE WHAT THE AUTH WILL LOOK LIKE
-  // PASSED TO HOMEPAGE
 
   const [auth, setAuth] = useState('1');
 
@@ -91,7 +85,6 @@ function App() {
     console.log(signupFormValue)
   }
 
-  // NEED SUBMIT HANDLER FOR SIGNUP FORM
   const signupFormSubmit = e => {
     e.preventDefault();
     // axios.post('', signupFormValue)
@@ -104,22 +97,18 @@ function App() {
     console.log(loginFormValue);
   }
 
-  // NEED SUBMIT HANDLER FOR LOGIN FORM
   const loginFormSubmit = e => {
     e.preventDefault();
     // axios.post('', loginFormValue)
     setLoginFormValue(initLoginForm);
   }
 
-  // NEED CHANGE HANDLER FOR ADDPLANT FORM
   const addPlantChangeHandler = e => {
     const {name, value} = e.target;
     setPlantForm({...plantForm, [name]: value});
     console.log(plantForm);
   }
 
-  // INCREASE/DECREMENT WATERPERDAY IN PLANTFORM STATE
-  // ATTACHES TO BUTTON NAME ADD AND REMOVE
   const waterNumberChanger = e => {
     e.preventDefault();
     if (e.target.name === 'add') {
@@ -138,6 +127,7 @@ function App() {
     // CHECKBOX NEEDS CHECKED
     // THIS DOUBLE SYNCHS THE CHECK VALUE ON INDEX 1 & 2 AGAIN
     // AND CHECKVALUES DO NOT UPDATE UNTIL NEW FORM IS ADDED OR REMOVED
+    // UNIT 3 WILL HANDLE
     if (name === 'half') {
       array.checked = !array.checked;
       return array;
@@ -155,14 +145,8 @@ function App() {
     let arr = timeFormValue;
     let arrIndex = arr[id]
     let newArrIndex = halfCheckboxHandler(name, value, arrIndex);
-    // let newArrIndex = {...arrIndex, [name]: value};
-    console.log(newArrIndex);
     arr[id] = newArrIndex;
     setTimeFormValue(arr);
-
-    // halfCheckboxHandler(e.target);
-
-    console.log(timeFormValue)
 
   }
 

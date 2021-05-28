@@ -5,7 +5,6 @@ export default function Login(props) {
     const {formValue, change, submit} = props;
 
     return (
-        // FORM NEEDS ON SUBMIT
         <div>
             <form onSubmit={submit} >
                 <label>

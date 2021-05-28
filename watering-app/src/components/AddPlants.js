@@ -4,7 +4,6 @@ export default function AddPlants(props) {
 
     const {formValue, waterHandler, change, timeChange, checkValue} = props;
 
-    // LAYOUT FOR SINGULAR TIME FORM
     const timeForm = index => {
         return (
             <div key={`time ${index}`} >
@@ -24,9 +23,7 @@ export default function AddPlants(props) {
             </div>
         )
     } 
-    // BUILDS ARRAY WITH LENGTH NUM
-    // ARRAY VALUES = INDEX NUM
-    // TO RETURN MULTIPLE TIME FORMS IT IS NECESSARY TO HAVE A UNIQUE VALUE TO KEEP TRACK OF THIS
+
     const arrayBuilder = num => {
         return Array.apply(null, Array(num)).map(function (cb, index) {return index})
     }
