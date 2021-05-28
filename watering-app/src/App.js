@@ -70,7 +70,7 @@ function App() {
     password: yup.string().required()
   })
 
-  const addPlantSchema = yup.object().shape({
+  const timeFormSchema = yup.object().shape({
     hour: yup.number().min().max().required(),
     minute: yup.number().min().max().required(),
     half: yup.boolean().required()
