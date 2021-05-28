@@ -105,6 +105,7 @@ function App() {
 
   const addPlantChangeHandler = e => {
     const {name, value} = e.target;
+    setPlantForm({...plantForm, id: plantList.length})
     setPlantForm({...plantForm, [name]: value});
     console.log(plantForm);
   }
