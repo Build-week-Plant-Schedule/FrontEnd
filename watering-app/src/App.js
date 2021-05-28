@@ -76,6 +76,15 @@ function App() {
     half: yup.boolean().required()
   })
 
+  // WHEN NEW FORM IS OPENED GENERATE ID BASED ON PLANTLIST
+  const addPlantSchema = yup.object().shape({
+    id: yup.number().integer().positive().min(0).required(),
+    nickname: yup.string().required(),
+    species: yup.string().required(),
+    waterPerDay: yup.number().integer().positive().min(1).required(),
+    h2oFrequency: yup.array().of(yup.date()).length(1).required()
+  })
+
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
     setSignupFormValue({...signupFormValue, [name]: value})
