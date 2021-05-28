@@ -59,6 +59,12 @@ function App() {
 
   const [plantList, setPlantList] = useState([])
 
+  const signUpSchema = yup.object().shape({
+    username: yup.string().required(),
+    phoneNumber: yup.string().required(),
+    password: yup.number().positive().integer().min(10).max(10).required()
+  })
+
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
     setSignupFormValue({...signupFormValue, [name]: value})
