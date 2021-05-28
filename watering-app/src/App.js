@@ -61,8 +61,13 @@ function App() {
 
   const signUpSchema = yup.object().shape({
     username: yup.string().required(),
-    phoneNumber: yup.string().required(),
-    password: yup.number().positive().integer().min(10).max(10).required()
+    phoneNumber: yup.number().positive().integer().min(10).max(10).required(),
+    password: yup.string().required()
+  })
+
+  const loginSchema = yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().required()
   })
 
   const signupFormChangeHandler = e => {
