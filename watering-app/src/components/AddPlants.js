@@ -56,7 +56,6 @@ export default function AddPlants(props) {
                 <div>
                     <label>
                         Add Time to Water
-                        {/* CALL TIME FORM HANDLER WITH THE VALUE IN WATERPERDAY */}
                         {h2oFormHandler(formValue.waterPerDay)}
                         <button name='remove' onClick={waterHandler} >Remove time</button>
                         <button name='add' onClick={waterHandler} >Add time</button>

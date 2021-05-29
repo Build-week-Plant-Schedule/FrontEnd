@@ -39,7 +39,7 @@ function App() {
     checked: false
   }
 
-  const [auth, setAuth] = useState('1');
+  const [auth, setAuth] = useState('');
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
@@ -49,10 +49,13 @@ function App() {
   const [loginErrors, setLoginErrors] = useState(initLoginForm)
   const [plantFormErrors, setPlantFormErrors] = useState(initAddPlantForm);
 
+  // FIND BETTER WAY TO VALIDATE PHONE NUMBER
+  // RATHER THAN NUMBER INPUT
+  // AND STRING VALIDATION
   const signUpSchema = yup.object().shape({
-    username: yup.string().required(),
-    phoneNumber: yup.number().positive().integer().min(10).max(10).required(),
-    password: yup.string().required()
+    username: yup.string().min(5).required(),
+    phoneNumber: yup.string().length(10).required(),
+    password: yup.string().min(8).required()
   })
 
   const loginSchema = yup.object().shape({
@@ -66,7 +69,6 @@ function App() {
     half: yup.boolean().required()
   })
 
-  // WHEN NEW FORM IS OPENED GENERATE ID BASED ON PLANTLIST
   const addPlantSchema = yup.object().shape({
     id: yup.number().integer().positive().min(0).required(),
     nickname: yup.string().min(5).required(),
@@ -77,14 +79,31 @@ function App() {
 
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
+    yup.reach(signUpSchema, name)
+      .validate(value)
+      .then(valid => {
+        setSignupErrors({...signupErrors, [name]: ''})
+      })
+      .catch(err => {
+        setSignupErrors({...signupErrors, [name]: err.errors[0]})
+      })
     setSignupFormValue({...signupFormValue, [name]: value})
-    console.log(signupFormValue)
+  }
+
+  const signupSubmitHelper = e => {
+    e.preventDefault();
+    console.log('in submit helper')
+      // axios.post('', signupFormValue)
+    setSignupFormValue(initSignupForm);
   }
 
   const signupFormSubmit = e => {
-    e.preventDefault();
-    // axios.post('', signupFormValue)
-    setSignupFormValue(initSignupForm);
+    console.log('in submit handler')
+    signupErrors.username === initSignupForm.username &&
+    signupErrors.phoneNumber === initSignupForm.phoneNumber &&
+    signupErrors.password === initSignupForm.password ?
+      signupSubmitHelper(e) :
+      e.preventDefault()
   }
 
   const loginFormChangeHandler = e => {
@@ -108,7 +127,6 @@ function App() {
         setPlantFormErrors({...plantFormErrors, [name]: initAddPlantForm[name]})
       })
       .catch(err => {
-        console.log(err)
         setPlantFormErrors({...plantFormErrors, [name]: err.errors[0]})
       })
 
@@ -216,7 +234,8 @@ function App() {
                 <Signup
                 formValue={signupFormValue}
                 change={signupFormChangeHandler}
-                submit={signupFormSubmit} />
+                submit={signupFormSubmit}
+                errors={signupErrors} />
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />
