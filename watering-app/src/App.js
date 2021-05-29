@@ -40,16 +40,14 @@ function App() {
   }
 
   const [auth, setAuth] = useState('1');
-
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
-
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
-
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
-
   const [timeFormValue, setTimeFormValue] = useState([initTimeFormValue])
-
   const [plantList, setPlantList] = useState([])
+  const [signupErrors, setSignupErrors] = useState(initSignupForm)
+  const [loginErrors, setLoginErrors] = useState(initLoginForm)
+  const [plantFormErrors, setPlantFormErrors] = useState(initAddPlantForm);
 
   const signUpSchema = yup.object().shape({
     username: yup.string().required(),
@@ -71,8 +69,8 @@ function App() {
   // WHEN NEW FORM IS OPENED GENERATE ID BASED ON PLANTLIST
   const addPlantSchema = yup.object().shape({
     id: yup.number().integer().positive().min(0).required(),
-    nickname: yup.string().required(),
-    species: yup.string().required(),
+    nickname: yup.string().min(5).required(),
+    species: yup.string().min(5).required(),
     waterPerDay: yup.number().integer().positive().min(1).required(),
     h2oFrequency: yup.array().of(yup.date()).length(1).required()
   })
@@ -103,6 +101,17 @@ function App() {
 
   const addPlantChangeHandler = e => {
     const {name, value} = e.target;
+
+    yup.reach(addPlantSchema, name)
+      .validate(value)
+      .then(valid => {
+        setPlantFormErrors({...plantFormErrors, [name]: initAddPlantForm[name]})
+      })
+      .catch(err => {
+        console.log(err)
+        setPlantFormErrors({...plantFormErrors, [name]: err.errors[0]})
+      })
+
     setPlantForm({...plantForm, id: plantList.length})
     setPlantForm({...plantForm, [name]: value});
   }
@@ -172,14 +181,22 @@ function App() {
   }
 
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
-  const addPlantSubmit = e => {
+  const plantSubmitHelper = e => {
     e.preventDefault();
     const times = h2oArrayCreater(timeFormValue);
     plantFormTimeSetter(times)
     // axios.post('', plantForm)
     plantListSetter()
     setPlantForm(initAddPlantForm);
-    setTimeFormValue([initTimeFormValue]);
+    setTimeFormValue([initTimeFormValue])
+
+  }
+
+  const addPlantSubmit = e => {
+    plantFormErrors.nickname === initAddPlantForm.nickname &&
+      plantFormErrors.species === initAddPlantForm.species ?
+        plantSubmitHelper(e) :
+        e.preventDefault();
   }
 
   return (
