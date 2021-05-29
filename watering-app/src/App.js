@@ -49,6 +49,7 @@ function App() {
   const [loginErrors, setLoginErrors] = useState(initLoginForm)
   const [plantFormErrors, setPlantFormErrors] = useState(initAddPlantForm);
 
+
   // FIND BETTER WAY TO VALIDATE PHONE NUMBER
   // RATHER THAN NUMBER INPUT
   // AND STRING VALIDATION
@@ -59,8 +60,8 @@ function App() {
   })
 
   const loginSchema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().required()
+    username: yup.string().min(5).required(),
+    password: yup.string().min(8).required()
   })
 
   const timeFormSchema = yup.object().shape({
@@ -92,13 +93,12 @@ function App() {
 
   const signupSubmitHelper = e => {
     e.preventDefault();
-    console.log('in submit helper')
+    setAuth('1');
       // axios.post('', signupFormValue)
     setSignupFormValue(initSignupForm);
   }
 
   const signupFormSubmit = e => {
-    console.log('in submit handler')
     signupErrors.username === initSignupForm.username &&
     signupErrors.phoneNumber === initSignupForm.phoneNumber &&
     signupErrors.password === initSignupForm.password ?
@@ -108,14 +108,29 @@ function App() {
 
   const loginFormChangeHandler = e => {
     const {name, value} = e.target; 
+    yup.reach(loginSchema, name)
+      .validate(value)
+      .then(valid => {
+        setLoginErrors({...loginErrors, [name]: ''})
+      })
+      .catch(err => {
+        setLoginErrors({...loginErrors, [name]: err.errors[0]})
+      })
     setLoginFormValue({...loginFormValue, [name]: value})
-    console.log(loginFormValue);
+  }
+
+  const loginSubmitHelper = e => {
+    e.preventDefault();
+    setAuth('1');
+    // axios.post('', loginFormValue)
+    setLoginFormValue(initLoginForm);
   }
 
   const loginFormSubmit = e => {
-    e.preventDefault();
-    // axios.post('', loginFormValue)
-    setLoginFormValue(initLoginForm);
+    loginErrors.username === initLoginForm.username &&
+    loginErrors.password === initLoginForm.password ?
+      loginSubmitHelper(e) :
+      e.preventDefault();
   }
 
   const addPlantChangeHandler = e => {
@@ -228,7 +243,8 @@ function App() {
                 <Login
                 formValue={loginFormValue}
                 change={loginFormChangeHandler}
-                submit={loginFormSubmit} />
+                submit={loginFormSubmit}
+                errors={loginErrors} />
           </Route>
           <Route exact path='/Signup'>
                 <Signup
