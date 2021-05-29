@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function AddPlants(props) {
 
-    const {formValue, waterHandler, change, timeChange, checkValue, submit} = props;
+    const {formValue, waterHandler, change, timeChange, checkValue, submit, errors} = props;
 
     const timeForm = index => {
         return (
@@ -33,6 +33,11 @@ export default function AddPlants(props) {
         });
     }
 
+    const nicknameError = () => {if (errors.nickname) return <span>{errors.nickname}</span>}
+
+    const speciesError = () => {if (errors.species) return <span>{errors.species}</span>}
+
+
     return (
         <div>
             <Link to='/'>Home</Link>
@@ -41,10 +46,12 @@ export default function AddPlants(props) {
                 <label>
                     Nickname
                     <input type='text' name='nickname' value={formValue.nickname} onChange={change} />
+                    {nicknameError()}
                 </label>
                 <label>
                     Species Name
                     <input type='text' name='species' value={formValue.species} onChange={change} />
+                    {speciesError()};
                 </label>
                 <div>
                     <label>

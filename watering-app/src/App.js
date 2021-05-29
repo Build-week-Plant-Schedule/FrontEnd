@@ -207,16 +207,29 @@ function App() {
             <Home auth={auth} />
           </Route>
           <Route exact path='/Login'>
-                <Login formValue={loginFormValue} change={loginFormChangeHandler} submit={loginFormSubmit} />
+                <Login
+                formValue={loginFormValue}
+                change={loginFormChangeHandler}
+                submit={loginFormSubmit} />
           </Route>
           <Route exact path='/Signup'>
-                <Signup formValue={signupFormValue} change={signupFormChangeHandler} submit={signupFormSubmit} />
+                <Signup
+                formValue={signupFormValue}
+                change={signupFormChangeHandler}
+                submit={signupFormSubmit} />
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} checkValue={timeFormValue} submit={addPlantSubmit} />
+                <AddPlants
+                formValue={plantForm}
+                change={addPlantChangeHandler}
+                timeChange={timeFormValueChangeHandler}
+                waterHandler={waterNumberChanger}
+                checkValue={timeFormValue}
+                submit={addPlantSubmit} 
+                errors={plantFormErrors} />
           </Route>
         </Switch>
       </Router>
