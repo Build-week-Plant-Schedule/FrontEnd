@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function AddPlants(props) {
 
-    const {formValue, waterHandler, change, timeChange, checkValue} = props;
+    const {formValue, waterHandler, change, timeChange, checkValue, submit} = props;
 
     const timeForm = index => {
         return (
@@ -17,7 +17,6 @@ export default function AddPlants(props) {
                 </label>
                 <label>
                     Click if time is PM
-                    {console.log(checkValue[index].checked)}
                     <input type='checkbox' name='half' value='pm' id={index} onChange={timeChange} checked={checkValue[index].checked} />
                 </label>
             </div>
@@ -38,7 +37,7 @@ export default function AddPlants(props) {
         <div>
             <Link to='/'>Home</Link>
             <h1>AddPlants loaded</h1>
-            <form>
+            <form onSubmit={submit} >
                 <label>
                     Nickname
                     <input type='text' name='nickname' value={formValue.nickname} onChange={change} />
@@ -56,6 +55,7 @@ export default function AddPlants(props) {
                         <button name='add' onClick={waterHandler} >Add time</button>
                     </label>
                 </div>
+                <button>Add Plant</button>
             </form>
         </div>
         

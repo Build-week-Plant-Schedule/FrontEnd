@@ -26,8 +26,6 @@ function App() {
   }
 
   const initAddPlantForm = {
-    // ID GENERATED BASED OFF PLANTLIST
-    // WHEN NEW FORM IS LOADED
     id: 0,
     nickname: '',
     species: '',
@@ -107,7 +105,6 @@ function App() {
     const {name, value} = e.target;
     setPlantForm({...plantForm, id: plantList.length})
     setPlantForm({...plantForm, [name]: value});
-    console.log(plantForm);
   }
 
   const waterNumberChanger = e => {
@@ -151,7 +148,39 @@ function App() {
 
   }
 
+  const h2oArrayCreater = state => {
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const dateOfMonth = date.getDate()
+    return state.map(cb => {
+      const hour = cb.checked ? parseInt(cb.hour) + 12 : cb.hour;
+      return new Date(year, month, dateOfMonth, hour, cb.minute )
+    })
+  }
+
+  const plantFormTimeSetter = time => {
+    const plantFormCopy = plantForm;
+    plantFormCopy.h2oFrequency = time;
+    setPlantForm(plantFormCopy);
+  }
+
+  const plantListSetter = () => {
+    const plantListCopy = plantList;
+    plantListCopy.push(plantForm);
+    setPlantList(plantListCopy);
+  }
+
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
+  const addPlantSubmit = e => {
+    e.preventDefault();
+    const times = h2oArrayCreater(timeFormValue);
+    plantFormTimeSetter(times)
+    // axios.post('', plantForm)
+    plantListSetter()
+    setPlantForm(initAddPlantForm);
+    setTimeFormValue([initTimeFormValue]);
+  }
 
   return (
     <div>
@@ -170,7 +199,7 @@ function App() {
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} checkValue={timeFormValue} />
+                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} checkValue={timeFormValue} submit={addPlantSubmit} />
           </Route>
         </Switch>
       </Router>
