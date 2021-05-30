@@ -154,7 +154,6 @@ function App() {
     if (e.target.name === 'add') {
       setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1});
       setTimeFormValue([...timeFormValue, initTimeFormValue]);
-      console.log(timeFormValue);
     } else if (plantForm.waterPerDay !== 1) {
       setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay - 1})
       let newTimeState = timeFormValue
@@ -254,7 +253,8 @@ function App() {
                 errors={signupErrors} />
           </Route>
           <Route exact path='/UserScreen'>
-                <UserScreen />
+                <UserScreen 
+                list={plantList} />
           </Route>
           <Route exact path='/AddPlants'>
                 <AddPlants
