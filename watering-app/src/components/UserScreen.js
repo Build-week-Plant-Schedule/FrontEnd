@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function UserScreen(props) {
 
-    const {list} = props;
+    const {list, deleteButton} = props;
 
     //  [plantlist
     //      {plant
@@ -11,6 +11,7 @@ export default function UserScreen(props) {
     //  div
     //      h2 Nickname
     //      p Time of day
+    //      btn Delete
 
     const timeGrabber = plantObj => {
         return plantObj.h2oFrequency.map(date => {
@@ -41,6 +42,7 @@ export default function UserScreen(props) {
             <div key={plant.nickname} >
                 <h2>{plant.nickname}</h2>
                 {timeGrabber(plant)}
+                <button name={plant.species} onClick={deleteButton} >Delete</button>
             </div>
         )
     })
