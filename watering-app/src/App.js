@@ -203,6 +203,7 @@ function App() {
   const plantFormTimeSetter = time => {
     const plantFormCopy = plantForm;
     plantFormCopy.h2oFrequency = time;
+    plantFormCopy.id = plantFormCopy.species
     setPlantForm(plantFormCopy);
   }
 
