@@ -1,10 +1,10 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {Route, Switch, Link, useHistory} from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 import Home from './components/Homepage';
 import Login from './components/Login';
@@ -39,6 +39,8 @@ function App() {
     checked: false
   }
 
+
+
   const [auth, setAuth] = useState('');
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
@@ -49,10 +51,13 @@ function App() {
   const [loginErrors, setLoginErrors] = useState(initLoginForm)
   const [plantFormErrors, setPlantFormErrors] = useState(initAddPlantForm);
 
+  let history = useHistory();
 
-  // FIND BETTER WAY TO VALIDATE PHONE NUMBER
-  // RATHER THAN NUMBER INPUT
-  // AND STRING VALIDATION
+  const homeRouter = () => {
+    history.push('/')
+  }
+
+
   const signUpSchema = yup.object().shape({
     username: yup.string().min(5).required(),
     phoneNumber: yup.string().length(10).required(),
@@ -96,6 +101,7 @@ function App() {
     setAuth('1');
       // axios.post('', signupFormValue)
     setSignupFormValue(initSignupForm);
+    homeRouter();
   }
 
   const signupFormSubmit = e => {
@@ -124,6 +130,7 @@ function App() {
     setAuth('1');
     // axios.post('', loginFormValue)
     setLoginFormValue(initLoginForm);
+    homeRouter();
   }
 
   const loginFormSubmit = e => {
@@ -154,7 +161,6 @@ function App() {
     if (e.target.name === 'add') {
       setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay + 1});
       setTimeFormValue([...timeFormValue, initTimeFormValue]);
-      console.log(timeFormValue);
     } else if (plantForm.waterPerDay !== 1) {
       setPlantForm({...plantForm, waterPerDay: plantForm.waterPerDay - 1})
       let newTimeState = timeFormValue
@@ -204,6 +210,7 @@ function App() {
   const plantFormTimeSetter = time => {
     const plantFormCopy = plantForm;
     plantFormCopy.h2oFrequency = time;
+    plantFormCopy.id = plantFormCopy.species
     setPlantForm(plantFormCopy);
   }
 
@@ -213,7 +220,6 @@ function App() {
     setPlantList(plantListCopy);
   }
 
-  // NEED SUBMIT HANDLER FOR ADDPLANT FORM
   const plantSubmitHelper = e => {
     e.preventDefault();
     const times = h2oArrayCreater(timeFormValue);
@@ -232,9 +238,24 @@ function App() {
         e.preventDefault();
   }
 
+  const plantListSplicer = e => {
+    e.preventDefault();
+    const {name} = e.target;
+    const deleteIndex = plantList.map((plant, index) => {
+      if (name !== plant.id) {
+        return index;
+      }
+    })
+    const newPlantList = plantList.splice(deleteIndex, 1);
+    setPlantList(newPlantList);
+  }
+
+  const userPlantDelete = e => {
+    plantList.length > 1 ? plantListSplicer(e) : setPlantList([]);
+  }
+
   return (
     <div>
-      <Router>
         <Switch>
           <Route exact path='/'>
             <Home auth={auth} />
@@ -254,7 +275,9 @@ function App() {
                 errors={signupErrors} />
           </Route>
           <Route exact path='/UserScreen'>
-                <UserScreen />
+                <UserScreen 
+                list={plantList}
+                deleteButton={userPlantDelete} />
           </Route>
           <Route exact path='/AddPlants'>
                 <AddPlants
@@ -267,7 +290,6 @@ function App() {
                 errors={plantFormErrors} />
           </Route>
         </Switch>
-      </Router>
     </div>
   );
 }
