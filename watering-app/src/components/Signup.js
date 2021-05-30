@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 export default function Signup(props) {
 
-    const {formValue, change, submit} = props;
+    const {formValue, change, submit, errors} = props;
 
     const [agree, setAgree] = useState(false)
 
@@ -12,14 +12,15 @@ export default function Signup(props) {
         setAgree(!agree);
       }
     
-      const btnHandler = () => {
-        alert('The button is clickable!')
-      }
+    const usernameError = () => {if (errors.username) return <span>{errors.username}</span> }
+
+    const phoneNumberError = () => {if (errors.phoneNumber) return <span>{errors.phoneNumber}</span> }
+
+    const passwordError = () => {if (errors.password) return <span>{errors.password}</span> }
 
     return (
         <div>
             <Link to='/'>Home</Link>
-            {/* FORM NEEDS ONSUBMIT */}
             <form onSubmit={submit} >
                 <label>
                     Username
@@ -28,14 +29,18 @@ export default function Signup(props) {
                      name='username' 
                      value={formValue.username} 
                      onChange={change} />
+                     {usernameError()}
                 </label>
                 <label>
                     Phone Number
                     <input 
-                     type='text'
+                     type='number'
                      name='phoneNumber' 
+                     min='0'
+                     max='9999999999'
                      value={formValue.phoneNumber} 
                      onChange={change} />
+                     {phoneNumberError()}
                 </label>
                 <label>
                     Password
@@ -44,6 +49,7 @@ export default function Signup(props) {
                      name='password' 
                      value={formValue.password} 
                      onChange={change} />
+                     {passwordError()}
                 </label>
                 <label>
                     Terms of Service
@@ -54,7 +60,7 @@ export default function Signup(props) {
                     onChange={checkboxHandler}
                     />
                 </label>
-                <button disabled={!agree} onClick={btnHandler}>Create New Account</button>
+                <button disabled={!agree}>Create New Account</button>
             </form>
         </div>
     )

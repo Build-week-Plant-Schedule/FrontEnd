@@ -26,12 +26,9 @@ function App() {
   }
 
   const initAddPlantForm = {
-    // ID SHOULD BE GENERATED ON SUBMIT
     id: 0,
     nickname: '',
     species: '',
-    // KEEPS TRACK OF NUMBER OF TIME INPUTS
-    // CRUCIAL TO RENDERING MULTIPLE TIME FORMS
     waterPerDay: 1,
     h2oFrequency: []
   }
@@ -42,58 +39,116 @@ function App() {
     checked: false
   }
 
-  // GETS SET WHEN USER LOGS IN
-  // CAN WORK WITH LIKE BOOLEAN
-  // NOT SURE WHAT THE AUTH WILL LOOK LIKE
-  // PASSED TO HOMEPAGE
-
-  const [auth, setAuth] = useState('1');
-
+  const [auth, setAuth] = useState('');
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
-
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
-
   const [plantForm, setPlantForm] = useState(initAddPlantForm);
-
   const [timeFormValue, setTimeFormValue] = useState([initTimeFormValue])
-
   const [plantList, setPlantList] = useState([])
+  const [signupErrors, setSignupErrors] = useState(initSignupForm)
+  const [loginErrors, setLoginErrors] = useState(initLoginForm)
+  const [plantFormErrors, setPlantFormErrors] = useState(initAddPlantForm);
+
+
+  // FIND BETTER WAY TO VALIDATE PHONE NUMBER
+  // RATHER THAN NUMBER INPUT
+  // AND STRING VALIDATION
+  const signUpSchema = yup.object().shape({
+    username: yup.string().min(5).required(),
+    phoneNumber: yup.string().length(10).required(),
+    password: yup.string().min(8).required()
+  })
+
+  const loginSchema = yup.object().shape({
+    username: yup.string().min(5).required(),
+    password: yup.string().min(8).required()
+  })
+
+  const timeFormSchema = yup.object().shape({
+    hour: yup.number().min().max().required(),
+    minute: yup.number().min().max().required(),
+    half: yup.boolean().required()
+  })
+
+  const addPlantSchema = yup.object().shape({
+    id: yup.number().integer().positive().min(0).required(),
+    nickname: yup.string().min(5).required(),
+    species: yup.string().min(5).required(),
+    waterPerDay: yup.number().integer().positive().min(1).required(),
+    h2oFrequency: yup.array().of(yup.date()).length(1).required()
+  })
 
   const signupFormChangeHandler = e => {
     const {name, value} = e.target;
+    yup.reach(signUpSchema, name)
+      .validate(value)
+      .then(valid => {
+        setSignupErrors({...signupErrors, [name]: ''})
+      })
+      .catch(err => {
+        setSignupErrors({...signupErrors, [name]: err.errors[0]})
+      })
     setSignupFormValue({...signupFormValue, [name]: value})
-    console.log(signupFormValue)
   }
 
-  // NEED SUBMIT HANDLER FOR SIGNUP FORM
-  const signupFormSubmit = e => {
+  const signupSubmitHelper = e => {
     e.preventDefault();
-    // axios.post('', signupFormValue)
+    setAuth('1');
+      // axios.post('', signupFormValue)
     setSignupFormValue(initSignupForm);
+  }
+
+  const signupFormSubmit = e => {
+    signupErrors.username === initSignupForm.username &&
+    signupErrors.phoneNumber === initSignupForm.phoneNumber &&
+    signupErrors.password === initSignupForm.password ?
+      signupSubmitHelper(e) :
+      e.preventDefault()
   }
 
   const loginFormChangeHandler = e => {
     const {name, value} = e.target; 
+    yup.reach(loginSchema, name)
+      .validate(value)
+      .then(valid => {
+        setLoginErrors({...loginErrors, [name]: ''})
+      })
+      .catch(err => {
+        setLoginErrors({...loginErrors, [name]: err.errors[0]})
+      })
     setLoginFormValue({...loginFormValue, [name]: value})
-    console.log(loginFormValue);
   }
 
-  // NEED SUBMIT HANDLER FOR LOGIN FORM
-  const loginFormSubmit = e => {
+  const loginSubmitHelper = e => {
     e.preventDefault();
+    setAuth('1');
     // axios.post('', loginFormValue)
     setLoginFormValue(initLoginForm);
   }
 
-  // NEED CHANGE HANDLER FOR ADDPLANT FORM
-  const addPlantChangeHandler = e => {
-    const {name, value} = e.target;
-    setPlantForm({...plantForm, [name]: value});
-    console.log(plantForm);
+  const loginFormSubmit = e => {
+    loginErrors.username === initLoginForm.username &&
+    loginErrors.password === initLoginForm.password ?
+      loginSubmitHelper(e) :
+      e.preventDefault();
   }
 
-  // INCREASE/DECREMENT WATERPERDAY IN PLANTFORM STATE
-  // ATTACHES TO BUTTON NAME ADD AND REMOVE
+  const addPlantChangeHandler = e => {
+    const {name, value} = e.target;
+
+    yup.reach(addPlantSchema, name)
+      .validate(value)
+      .then(valid => {
+        setPlantFormErrors({...plantFormErrors, [name]: initAddPlantForm[name]})
+      })
+      .catch(err => {
+        setPlantFormErrors({...plantFormErrors, [name]: err.errors[0]})
+      })
+
+    setPlantForm({...plantForm, id: plantList.length})
+    setPlantForm({...plantForm, [name]: value});
+  }
+
   const waterNumberChanger = e => {
     e.preventDefault();
     if (e.target.name === 'add') {
@@ -112,6 +167,7 @@ function App() {
     // CHECKBOX NEEDS CHECKED
     // THIS DOUBLE SYNCHS THE CHECK VALUE ON INDEX 1 & 2 AGAIN
     // AND CHECKVALUES DO NOT UPDATE UNTIL NEW FORM IS ADDED OR REMOVED
+    // UNIT 3 WILL HANDLE
     if (name === 'half') {
       array.checked = !array.checked;
       return array;
@@ -129,18 +185,52 @@ function App() {
     let arr = timeFormValue;
     let arrIndex = arr[id]
     let newArrIndex = halfCheckboxHandler(name, value, arrIndex);
-    // let newArrIndex = {...arrIndex, [name]: value};
-    console.log(newArrIndex);
     arr[id] = newArrIndex;
     setTimeFormValue(arr);
 
-    // halfCheckboxHandler(e.target);
+  }
 
-    console.log(timeFormValue)
+  const h2oArrayCreater = state => {
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    const dateOfMonth = date.getDate()
+    return state.map(cb => {
+      const hour = cb.checked ? parseInt(cb.hour) + 12 : cb.hour;
+      return new Date(year, month, dateOfMonth, hour, cb.minute )
+    })
+  }
 
+  const plantFormTimeSetter = time => {
+    const plantFormCopy = plantForm;
+    plantFormCopy.h2oFrequency = time;
+    setPlantForm(plantFormCopy);
+  }
+
+  const plantListSetter = () => {
+    const plantListCopy = plantList;
+    plantListCopy.push(plantForm);
+    setPlantList(plantListCopy);
   }
 
   // NEED SUBMIT HANDLER FOR ADDPLANT FORM
+  const plantSubmitHelper = e => {
+    e.preventDefault();
+    const times = h2oArrayCreater(timeFormValue);
+    plantFormTimeSetter(times)
+    // axios.post('', plantForm)
+    plantListSetter()
+    setPlantForm(initAddPlantForm);
+    setTimeFormValue([initTimeFormValue])
+
+  }
+
+  const addPlantSubmit = e => {
+    plantFormErrors.nickname === initAddPlantForm.nickname &&
+      plantFormErrors.species === initAddPlantForm.species ?
+        plantSubmitHelper(e) :
+        e.preventDefault();
+  }
 
   return (
     <div>
@@ -150,16 +240,31 @@ function App() {
             <Home auth={auth} />
           </Route>
           <Route exact path='/Login'>
-                <Login formValue={loginFormValue} change={loginFormChangeHandler} submit={loginFormSubmit} />
+                <Login
+                formValue={loginFormValue}
+                change={loginFormChangeHandler}
+                submit={loginFormSubmit}
+                errors={loginErrors} />
           </Route>
           <Route exact path='/Signup'>
-                <Signup formValue={signupFormValue} change={signupFormChangeHandler} submit={signupFormSubmit} />
+                <Signup
+                formValue={signupFormValue}
+                change={signupFormChangeHandler}
+                submit={signupFormSubmit}
+                errors={signupErrors} />
           </Route>
           <Route exact path='/UserScreen'>
                 <UserScreen />
           </Route>
           <Route exact path='/AddPlants'>
-                <AddPlants formValue={plantForm} change={addPlantChangeHandler} timeChange={timeFormValueChangeHandler} waterHandler={waterNumberChanger} checkValue={timeFormValue} />
+                <AddPlants
+                formValue={plantForm}
+                change={addPlantChangeHandler}
+                timeChange={timeFormValueChangeHandler}
+                waterHandler={waterNumberChanger}
+                checkValue={timeFormValue}
+                submit={addPlantSubmit} 
+                errors={plantFormErrors} />
           </Route>
         </Switch>
       </Router>
