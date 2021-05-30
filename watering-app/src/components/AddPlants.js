@@ -41,7 +41,6 @@ export default function AddPlants(props) {
     return (
         <div>
             <Link to='/'>Home</Link>
-            <h1>AddPlants loaded</h1>
             <form onSubmit={submit} >
                 <label>
                     Nickname
@@ -56,9 +55,9 @@ export default function AddPlants(props) {
                 <div>
                     <label>
                         Add Time to Water
-                        {h2oFormHandler(formValue.waterPerDay)}
-                        <button name='remove' onClick={waterHandler} >Remove time</button>
                         <button name='add' onClick={waterHandler} >Add time</button>
+                        <button name='remove' onClick={waterHandler} >Remove time</button>
+                        {h2oFormHandler(formValue.waterPerDay)}
                     </label>
                 </div>
                 <button>Add Plant</button>

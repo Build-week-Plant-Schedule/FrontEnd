@@ -19,10 +19,6 @@ export default function UserScreen(props) {
             const hour = date.getHours();
             const minute = date.getMinutes();
             let returnVal = [hour, minute, 'PM']
-            // if (hour > 12) return <p>{hour - 12}:{minute} PM</p>
-            // if (hour === 12) return <p>{hour}:{minute} PM</p>
-            // if (hour === 0) return <p>12:{minute} AM</p>
-            // if (hour < 12) return <p>{hour}:{minute} AM</p>
 
             if (hour > 12) {
                 returnVal[0] = hour - 12;
