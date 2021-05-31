@@ -1,4 +1,5 @@
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+
+import {Link} from 'react-router-dom'
 
 export default function Login(props) {
 
@@ -10,6 +11,7 @@ export default function Login(props) {
 
     return (
         <div>
+            <Link to='/'>Home</Link>
             <form onSubmit={submit} >
                 <label>
                     Username
