@@ -1,5 +1,6 @@
 import {useState} from 'react'
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import Home from './Homepage';
 
 
 export default function Signup(props) {

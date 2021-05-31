@@ -1,4 +1,5 @@
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import Home from './Homepage';
 
 export default function AddPlants(props) {
 
@@ -50,7 +51,7 @@ export default function AddPlants(props) {
                 <label>
                     Species Name
                     <input type='text' name='species' value={formValue.species} onChange={change} />
-                    {speciesError()};
+                    {speciesError()}
                 </label>
                 <div>
                     <label>

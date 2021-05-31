@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
 
-import {Route, Switch, Link, useHistory} from 'react-router-dom';
+import {Route, Switch, useHistory, Link} from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
 import {useState, useEffect} from 'react';
@@ -11,6 +11,8 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import UserScreen from './components/UserScreen';
 import AddPlants from './components/AddPlants';
+
+
 
 function App() {
 
@@ -40,7 +42,6 @@ function App() {
   }
 
 
-
   const [auth, setAuth] = useState('');
   const [signupFormValue, setSignupFormValue] = useState(initSignupForm);
   const [loginFormValue, setLoginFormValue] = useState(initLoginForm);
@@ -67,12 +68,6 @@ function App() {
   const loginSchema = yup.object().shape({
     username: yup.string().min(5).required(),
     password: yup.string().min(8).required()
-  })
-
-  const timeFormSchema = yup.object().shape({
-    hour: yup.number().min().max().required(),
-    minute: yup.number().min().max().required(),
-    half: yup.boolean().required()
   })
 
   const addPlantSchema = yup.object().shape({
@@ -277,7 +272,7 @@ function App() {
           <Route exact path='/UserScreen'>
                 <UserScreen 
                 list={plantList}
-                deleteButton={userPlantDelete} />
+                deleteButton={userPlantDelete}/>
           </Route>
           <Route exact path='/AddPlants'>
                 <AddPlants
@@ -287,7 +282,7 @@ function App() {
                 waterHandler={waterNumberChanger}
                 checkValue={timeFormValue}
                 submit={addPlantSubmit} 
-                errors={plantFormErrors} />
+                errors={plantFormErrors}/>
           </Route>
         </Switch>
     </div>

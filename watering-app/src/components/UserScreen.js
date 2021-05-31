@@ -1,21 +1,11 @@
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 export default function UserScreen(props) {
 
     const {list, deleteButton} = props;
 
-    //  [plantlist
-    //      {plant
-    //          h2o: [dates]
-    //  }]
-    //  div
-    //      h2 Nickname
-    //      p Time of day
-    //      btn Delete
-
     const timeGrabber = plantObj => {
         return plantObj.h2oFrequency.map(date => {
-            console.log('in time grabber')
             const hour = date.getHours();
             const minute = date.getMinutes();
             let returnVal = [hour, minute, 'PM']
@@ -46,7 +36,7 @@ export default function UserScreen(props) {
     return (
         <div>
             <Link to='/'>Home</Link>
-            <h1>UserScreen Loaded</h1>
+            <p>When you have added plants the time to water them will appear here!</p>
             {plantCard}
         </div>
     )
